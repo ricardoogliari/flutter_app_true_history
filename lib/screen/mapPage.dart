@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_true_history/businessLogic/historyModel.dart';
+import 'package:flutter_app_true_history/model/history.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -66,24 +69,47 @@ class MapPageState extends State<MapPage> {
 
   void moveMap(double lat, double lng) async{
     CameraPosition _myPosition = CameraPosition(
-        bearing: 192.8334901395799,//bussola
         target: LatLng(lat, lng),
         zoom: 14);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_myPosition));
   }
 
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: GoogleMap(
-          mapType: MapType.normal,
-          initialCameraPosition: _initialPosition,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-        )
+      body: Consumer<HistoryModel>(
+        builder: (context, cart, child) {
+          return GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: _initialPosition,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+            markers: buildMarkers(cart.histories),
+          );
+        },
+      ),
     );
   }
+
+  Set<Marker> buildMarkers(List<History> histories){
+    histories.forEach((history) {
+      final marker = Marker(
+        markerId: MarkerId(history.title),
+        position: LatLng(history.latitude, history.longitude),
+        infoWindow: InfoWindow(
+          title: history.title,
+          snippet: history.description,
+        ),
+      );
+      _markers[history.title] = marker;
+    });
+
+    return _markers.values.toSet();
+  }
+
+  final Map<String, Marker> _markers = {};
+
+
 }

@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_true_history/businessLogic/historyModel.dart';
 import 'package:flutter_app_true_history/screen/mapPage.dart';
 import 'package:flutter_app_true_history/screen/listPage.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
 
@@ -38,6 +41,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    HistoryModel model = Provider.of<HistoryModel>(context, listen: false);
+    FirebaseFirestore.instance.collection('history').snapshots().listen((event) {
+      model.setHistories(event.docs);
     });
   }
 

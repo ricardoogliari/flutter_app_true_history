@@ -1,12 +1,21 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_true_history/businessLogic/historyModel.dart';
 import 'package:flutter_app_true_history/screen/homePage.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  //Widget
-  runApp(HomePage());
+void main() async{
+  //garanto que toda inicialização do flutter necessária já foi feita
+  WidgetsFlutterBinding.ensureInitialized();
+  //aguarda alguns instantes garantindo que o Firebase seja inicializado
+  await Firebase.initializeApp();
+  runApp(
+    //informa pro filho (HOmePage) e seus descendentes (Widget Tree) que eles
+    //podem ler e/ou alterar um changeNotifier informado no create
+    ChangeNotifierProvider(
+      create: (context) => HistoryModel(),
+      child: HomePage(),
+    ),
+
+  );
 }
-
-//StatelessWidget, StatefulWidget, State
-//StatelessWidget = widgets que não aletar o seu estado
-//StatefulWidget = widget que pode ter alterações no seu estado
-   //quem controla o estado do StafulWidget é justamente o State

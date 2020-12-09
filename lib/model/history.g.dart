@@ -18,6 +18,8 @@ History _$HistoryFromJson(Map<String, dynamic> json) {
     json['numberTrue'] as int,
     json['numberFalse'] as int,
     (json['tags'] as List)?.map((e) => e as String)?.toList(),
+    (json['latitude'] as num)?.toDouble(),
+    (json['longitude'] as num)?.toDouble(),
   );
 }
 
@@ -32,4 +34,6 @@ Map<String, dynamic> _$HistoryToJson(History instance) => <String, dynamic>{
       'numberTrue': instance.numberTrue,
       'numberFalse': instance.numberFalse,
       'tags': instance.tags,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
     };
