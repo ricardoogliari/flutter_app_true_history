@@ -16,7 +16,9 @@ class History {
       this.otherSocialNetwork,
       this.numberTrue,
       this.numberFalse,
-      this.tags);
+      this.tags,
+      this.latitude,
+      this.longitude);
 
   final String title;
   final String description;
@@ -28,6 +30,8 @@ class History {
   final int numberTrue;
   final int numberFalse;
   final List<String> tags;
+  final double latitude;
+  final double longitude;
 
   factory History.fromJson(Map<String, dynamic> json) => _$HistoryFromJson(json);
 

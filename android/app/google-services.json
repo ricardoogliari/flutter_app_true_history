@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "474888683146",
+    "project_id": "apptruehistory",
+    "storage_bucket": "apptruehistory.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474888683146:android:ac9d920b665a9be0f3f773",
+        "android_client_info": {
+          "package_name": "br.com.gok.curso.flutter_app_true_history"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "474888683146-vsvtpj37a9m8i9t3ldrds9f120jhsmo1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkySICPjrsitUzd_kOYv6DDxgzLNnzXiE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474888683146-vsvtpj37a9m8i9t3ldrds9f120jhsmo1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

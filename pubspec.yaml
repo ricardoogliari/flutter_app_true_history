@@ -31,6 +31,12 @@ dependencies:
   json_annotation: ^3.1.0
   google_maps_flutter: ^1.0.6
   dio: ^3.0.10
+  cloud_firestore: ^0.14.4
+  firebase_core: ^0.5.3
+  provider: ^3.0.0
+  mobx: ^1.2.1+4
+  mobx_codegen: ^1.1.2
+  get_it: ^5.0.3
 
 dev_dependencies:
   flutter_test:
