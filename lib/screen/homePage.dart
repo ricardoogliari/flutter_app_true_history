@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_true_history/businessLogic/currentPosition.dart';
 import 'package:flutter_app_true_history/businessLogic/historyModel.dart';
 import 'package:flutter_app_true_history/screen/mapPage.dart';
 import 'package:flutter_app_true_history/screen/listPage.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_app_true_history/util/routes.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart' as Provider;
 
 class HomePage extends StatelessWidget {
 
@@ -15,7 +18,8 @@ class HomePage extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyStatefulWidget(),
+      routes: routesInApp,
+      initialRoute: "/",
     );
   }
 
@@ -38,6 +42,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     ListPage()
   ];
 
+  void setup() {
+    GetIt.I.registerSingleton<CurrentPosition>(CurrentPosition());
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -48,7 +56,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   void initState() {
     super.initState();
 
-    HistoryModel model = Provider.of<HistoryModel>(context, listen: false);
+    setup();
+    GetIt.I<CurrentPosition>().getCurrentPosition();
+
+    HistoryModel model = Provider.Provider.of<HistoryModel>(context, listen: false);
     FirebaseFirestore.instance.collection('history').snapshots().listen((event) {
       model.setHistories(event.docs);
     });
@@ -59,6 +70,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Histórias'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.create),
+            tooltip: 'Nova história',
+            onPressed: () {
+              Navigator.pushNamed(
+                  context,
+                  newHistoryRoute);
+            },
+          ),
+        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
