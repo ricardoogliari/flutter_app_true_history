@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_true_history/businessLogic/currentPosition.dart';
 import 'package:flutter_app_true_history/businessLogic/historyModel.dart';
 import 'package:flutter_app_true_history/screen/mapPage.dart';
 import 'package:flutter_app_true_history/screen/listPage.dart';
+import 'package:flutter_app_true_history/screen/newHistory.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,7 +18,11 @@ class HomePage extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyStatefulWidget(),
+      routes: {
+        '/': (context) => MyStatefulWidget(),
+        '/newHistory': (context) => NewHistory()
+      },
+      initialRoute: "/",
     );
   }
 
@@ -44,9 +51,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     });
   }
 
+  void setup() {
+    //GetIt: injeção de dependência
+    GetIt.I.registerSingleton<CurrentPosition>(CurrentPosition());
+  }
+
   @override
   void initState() {
     super.initState();
+
+    setup();
+    //invoca um action em um dado observable, causando toda uma reação no modelo MobX
+    //action, observable, reaction
+    GetIt.I<CurrentPosition>().getCurrentPosition();
 
     HistoryModel model = Provider.of<HistoryModel>(context, listen: false);
     FirebaseFirestore.instance.collection('history').snapshots().listen((event) {
@@ -59,6 +76,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Histórias'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.create),
+            tooltip: 'Nova história',
+            onPressed: () {
+              Navigator.pushNamed(
+                  context,
+                  "/newHistory");
+            },
+          ),
+        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),

@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_true_history/businessLogic/currentPosition.dart';
 import 'package:flutter_app_true_history/businessLogic/historyModel.dart';
 import 'package:flutter_app_true_history/model/history.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
 class MapPage extends StatefulWidget {
@@ -27,49 +30,17 @@ class MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-    _callNativeCode();
+
+    //nós programamos uma reaction para um observable
+    autorun((_) {
+      moveMap(GetIt.I<CurrentPosition>().latLng);
+    });
+
   }
 
-  //tem o mesmo conceito do async await do TypeScript/Rn
-  void _callNativeCode() async { //não congele a nossa tela
-    try {
-      //ele vai fazer uma ação assíncrona, então ela fica preso aqui enquanto não recebe uma resposta
-      final String networkData = await platform.invokeMethod("oInterVaiTomarPauDoBocaHojeSeDeusQuiser");
-      getHttp(networkData);
-    } on PlatformException catch (e) {
-
-    }
-  }
-  /*void _callNativeCode() { //não congele a nossa tela
-    try {
-      //ele vai fazer uma ação assíncrona, então ela fica preso aqui enquanto não recebe uma resposta
-      platform.invokeMethod("mamaoDoce").then((value) => {
-        getHttp(value);
-      });
-
-    } on PlatformException catch (e) {
-
-    }
-  }*/
-
-  void getHttp(String networkData) async {
-    try {
-      List<String> parts = networkData.split("|");
-      Response response = await Dio().post(
-          "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBd3ZTgtyvPgew5O9CVFrxilS7MS3d5YR8",
-          data: {
-            "macAddress": parts[0],
-            "signalStrength": parts[1]
-          });
-      moveMap(response.data["location"]["lat"], response.data["location"]["lng"]);
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void moveMap(double lat, double lng) async{
+  void moveMap(LatLng latLng) async{
     CameraPosition _myPosition = CameraPosition(
-        target: LatLng(lat, lng),
+        target: latLng,
         zoom: 14);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_myPosition));
