@@ -5,6 +5,7 @@ import 'package:flutter_app_true_history/businessLogic/historyModel.dart';
 import 'package:flutter_app_true_history/screen/mapPage.dart';
 import 'package:flutter_app_true_history/screen/listPage.dart';
 import 'package:flutter_app_true_history/screen/newHistory.dart';
+import 'package:flutter_app_true_history/util/routes.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
@@ -18,11 +19,8 @@ class HomePage extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      routes: {
-        '/': (context) => MyStatefulWidget(),
-        '/newHistory': (context) => NewHistory()
-      },
-      initialRoute: "/",
+      routes: routesInApp,
+      initialRoute: homeRoute,
     );
   }
 
@@ -83,7 +81,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             onPressed: () {
               Navigator.pushNamed(
                   context,
-                  "/newHistory");
+                  newHistoryRoute);
             },
           ),
         ],
