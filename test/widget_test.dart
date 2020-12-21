@@ -6,25 +6,26 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_true_history/screen/newHistory.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_app_true_history/main.dart';
+Widget createWidgetForTesting({Widget child}){
+  return MaterialApp(
+    home: child,
+  );
+}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    /*await tester.pumpWidget(MyApp());
+  testWidgets('Check App Init', (WidgetTester tester) async {
+    await tester.pumpWidget(createWidgetForTesting(child: NewHistory()));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    Finder finderErrorMsg = find.text("Insira o site da história");
+    expect(finderErrorMsg, findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    await tester.tap(find.byKey(Key("BtnSave")));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);*/
+    finderErrorMsg = find.text("Insira o site da história");
+    expect(finderErrorMsg, findsOneWidget);
   });
 }

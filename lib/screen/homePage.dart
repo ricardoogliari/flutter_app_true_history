@@ -13,14 +13,17 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      routes: routesInApp,
-      initialRoute: homeRoute,
+    return ChangeNotifierProvider(
+      create: (context) => HistoryModel(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        routes: routesInApp,
+        initialRoute: homeRoute,
+      )
     );
   }
 
@@ -64,9 +67,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     GetIt.I<CurrentPosition>().getCurrentPosition();
 
     HistoryModel model = Provider.of<HistoryModel>(context, listen: false);
-    FirebaseFirestore.instance.collection('history').snapshots().listen((event) {
+    /*FirebaseFirestore.instance.collection('history').snapshots().listen((event) {
       model.setHistories(event.docs);
-    });
+    });*/
   }
 
   @override

@@ -7,7 +7,7 @@ part of 'history.dart';
 // **************************************************************************
 
 History _$HistoryFromJson(Map<String, dynamic> json) {
-  return History(
+  return History.full(
     json['title'] as String,
     json['description'] as String,
     json['city'] as String,

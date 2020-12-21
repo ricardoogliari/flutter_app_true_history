@@ -12,10 +12,6 @@ void main() async{
   runApp(
     //informa pro filho (HOmePage) e seus descendentes (Widget Tree) que eles
     //podem ler e/ou alterar um changeNotifier informado no create
-    ChangeNotifierProvider(
-      create: (context) => HistoryModel(),
-      child: HomePage(),
-    ),
-
+    HomePage(),
   );
 }
