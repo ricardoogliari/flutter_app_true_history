@@ -21,11 +21,41 @@ class HistoryModel extends ChangeNotifier{
   }
 
   void setHistories(List<DocumentSnapshot> snapshot) {
-    List<History> itens = snapshot.map<History>((e) => History.fromJson(e.data())).toList();
+    List<History> itens = snapshot.map<History>((e) => History.fromJson(
+        e.reference, e.data())).toList();
 
     _histories.clear();
     _histories.addAll(itens);
     notifyListeners();
   }
+
+  void saveHistory(History item) {
+    FirebaseFirestore.instance.collection('history').add(
+        item.toJson()
+    );
+  }
+
+  void realHistory(History item) {
+    item.numberTrue++;
+
+    if (item.reference != null) {
+      saveItemInFirebase(item);
+    }
+  }
+
+  void fakeHistory(History item) {
+    item.numberFalse++;
+
+    if (item.reference != null) {
+      saveItemInFirebase(item);
+    }
+  }
+
+  void saveItemInFirebase(History item){
+    item.reference.set(item.toJson());
+  }
+
+
+
 
 }

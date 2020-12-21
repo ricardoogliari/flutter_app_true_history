@@ -8,9 +8,12 @@ import 'package:provider/provider.dart';
 
 class ListPage extends StatelessWidget {
 
+  HistoryModel model;
+
   //pública
   @override
   Widget build(BuildContext context) {
+    model = Provider.of<HistoryModel>(context, listen: false);
     return _buildBody(context);
   }
 
@@ -30,29 +33,39 @@ class ListPage extends StatelessWidget {
   }
 
   Widget _buildListItem(BuildContext context, History history) => ListTile(
-      leading: Container(
-        width: 32,
-        height: 32,
-        decoration: BoxDecoration(
-            color: Colors.green,
-            shape: BoxShape.circle,
-            border: Border.all(
-                color: Colors.black
-            )
+      leading: InkWell(
+        onTap: () {
+          model.realHistory(history);
+        },
+        child: Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+              color: Colors.green,
+              shape: BoxShape.circle,
+              border: Border.all(
+                  color: Colors.black
+              )
+          ),
+          child: Center(child: Text("${history.numberTrue}")),
         ),
-        child: Center(child: Text("10")),
       ),
-      trailing: Container(
-        width: 32,
-        height: 32,
-        decoration: new BoxDecoration(
-            color: Colors.red,
-            shape: BoxShape.circle,
-            border: Border.all(
-                color: Colors.black
-            )
+      trailing: InkWell(
+        onTap: () {
+          model.fakeHistory(history);
+        },
+        child: Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+              border: Border.all(
+                  color: Colors.black
+              )
+          ),
+          child: Center(child: Text("${history.numberFalse}")),
         ),
-        child: Center(child: Text("1")),
       ),
       title: Text(history.title),
       //flexbox css3 - mesmo conceito usado no cross e main axis
